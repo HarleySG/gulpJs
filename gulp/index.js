@@ -1,3 +1,4 @@
 const pug = require('./pug');
+const scss = require('./scss');
 
-module.exports = { pug, more: '...' };
+module.exports = { pug, scss };

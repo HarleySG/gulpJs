@@ -17,16 +17,27 @@ const paths = {
             destiny: `./dist/${$.level}`,
         },
     },
+    scss: {
+        origin: 'src/styles/',
+        destiny: './dist',
+    },
 };
 
 function html(done) {
-    const pugFiles = paths['pug'];
-    Object.keys(pugFiles).map((path) => {
-        const pugPaths = pugFiles[path];
+    const folders = paths['pug'];
+    Object.keys(folders).map((path) => {
+        const pugPaths = folders[path];
         return $.task.pug(`${pugPaths['origin']}*.pug`, pugPaths['destiny']);
     });
     done();
 }
 
+function css(done) {
+    const folders = paths['scss'];
+    $.task.scss(`${folders['origin']}*.scss`, folders['destiny']);
+    done();
+}
+
 exports.html = html;
-exports.default = parallel(html);
+exports.css = css;
+exports.default = parallel(html, css);
