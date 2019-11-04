@@ -1,0 +1,29 @@
+{
+	"name": "learning.gulpjs",
+	"version": "1.0.0",
+	"description": "Configuración a la versión 4 de gulpjs",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/HarleySG/gulpJs.git"
+	},
+	"keywords": [
+		"gulpjs",
+		"gulpjs 4.0"
+	],
+	"author": "Harley Santos Garzón",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/HarleySG/gulpJs/issues"
+	},
+	"homepage": "https://github.com/HarleySG/gulpJs#readme",
+	"dependencies": {
+		"gulp": "4.0.2",
+		"gulp-cli": "^2.2.0",
+		"gulp-sass": "^4.0.1",
+		"gulp-pug": "^4.0.1"
+	}
+}
