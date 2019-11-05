@@ -52,13 +52,15 @@ function css(done) {
     done();
 }
 
-function watchFiles() {
+function watchFiles(done) {
     const scss = paths['scss'];
     const pug = paths['pug'];
     const js = paths['js'];
+
     w(`${scss['origin']}*.scss`, css);
     w(`${pug['origin']}*.pug`, pug);
     w(`${js['origin']}*.js`, js);
+    done();
 }
 
 const dev = series(html, css, js);
