@@ -14,6 +14,6 @@ function getFiles(dir) {
 }
 
 module.exports = {
-    folders: getFolders,
+    dir: getFolders,
     files: getFiles,
 };
