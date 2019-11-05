@@ -1,9 +1,13 @@
-const { parallel } = require('gulp');
+const { parallel, watch: w, series } = require('gulp');
 
 global.$ = {
     task: require('./gulp'),
     level: 'A2',
     module: 1,
+    compile: {
+        section: 'A2',
+        module: 1,
+    },
 };
 
 const paths = {
@@ -21,7 +25,17 @@ const paths = {
         origin: 'src/styles/',
         destiny: './dist',
     },
+    js: {
+        origin: 'src/scripts/',
+        destiny: './dist',
+    },
 };
+
+function js(done) {
+    const jsPaths = paths['js'];
+    $.task.js(`${jsPaths['origin']}*.js`, jsPaths['destiny']);
+    done();
+}
 
 function html(done) {
     const folders = paths['pug'];
@@ -38,6 +52,22 @@ function css(done) {
     done();
 }
 
+function watchFiles() {
+    const scss = paths['scss'];
+    const pug = paths['pug'];
+    const js = paths['js'];
+    w(`${scss['origin']}*.scss`, css);
+    w(`${pug['origin']}*.pug`, pug);
+    w(`${js['origin']}*.js`, js);
+}
+
+const dev = series(html, css, js);
+const watch = parallel(watchFiles);
+const build = series(dev, parallel(watch));
+
+exports.js = js;
 exports.html = html;
 exports.css = css;
-exports.default = parallel(html, css);
+exports.build = build;
+exports.watch = watch;
+exports.default = build;
