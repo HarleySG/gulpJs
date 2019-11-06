@@ -6,7 +6,7 @@ const gulpif = require('gulp-if');
 const pug = require('gulp-pug');
 const pugInheritance = require('gulp-pug-inheritance');
 
-function setPug(origin, destiny) {
+function setPug(origin) {
     return src(origin, { since: $.gulp.lastRun(setPug) })
         .pipe(changed('dist', { extension: '.html' }))
         .pipe(gulpif(global.isWatching, cached(setPug)))
@@ -27,7 +27,8 @@ function setPug(origin, destiny) {
                 pretty: true,
             }).on('error', $.hasError)
         )
-        .pipe(dest('dist'));
+        .pipe(dest('dist'))
+        .on('end', $.sync.reload);
 }
 
 module.exports = setPug;

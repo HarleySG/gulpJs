@@ -4,4 +4,5 @@ const babel = require('gulp-babel');
 module.exports = (origin, destiny) =>
     src(origin)
         .pipe(babel())
-        .pipe(dest(destiny));
+        .pipe(dest(destiny))
+        .on('end', $.sync.reload);
