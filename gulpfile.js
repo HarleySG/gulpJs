@@ -1,66 +1,16 @@
 const { parallel, watch: w, series } = require('gulp');
 const g = require('gulp');
-const notify = require('gulp-notify');
 
 global.$ = {
     gulp: g,
     task: require('./gulp'),
     level: 'A2',
     module: 1,
-    hasError: function(error) {
-        var args = Array.prototype.slice.call(arguments);
-        notify
-            .onError({
-                title: 'Compile Error',
-                message: '<%= error.message %>',
-            })
-            .apply(this, args);
-
-        this.emit('end');
-    },
+    hasError: require('./gulp/notify'),
+    sync: require('./gulp/server'),
 };
 
-global.$.paths = {
-    pug: {
-        index: {
-            origin: 'src/views/',
-            destiny: './dist',
-        },
-        level: {
-            origin: `src/views/${$.level}/**/**/`,
-            destiny: `./dist/${$.level}`,
-        },
-    },
-    scss: {
-        origin: 'src/styles/',
-        destiny: './dist',
-    },
-    js: {
-        origin: 'src/scripts/',
-        destiny: './dist',
-    },
-};
-
-function js(done) {
-    const jsPaths = $.paths['js'];
-    $.task.js(`${jsPaths['origin']}*.js`, jsPaths['destiny']);
-    done();
-}
-
-function html(done) {
-    const folders = $.paths['pug'];
-    Object.keys(folders).map((path) => {
-        const pugPaths = folders[path];
-        return $.task.pug(`${pugPaths['origin']}*.pug`, pugPaths['destiny']);
-    });
-    done();
-}
-
-function css(done) {
-    const folders = $.paths['scss'];
-    $.task.scss(`${folders['origin']}*.scss`, folders['destiny']);
-    done();
-}
+global.$.paths = require('./gulp/paths');
 
 function watchFiles(done) {
     const scss = $.paths['scss'];
@@ -68,23 +18,24 @@ function watchFiles(done) {
     const _js = $.paths['js'];
 
     w([`${scss['origin']}*.scss`, `${scss['origin']}**/*.scss`], series(css));
-    w(`${pug['index']['origin']}*.pug`, series(html)).on('change', (file) => {
-        console.log('TCL: watchFiles -> index', '-> file', file);
-    });
-    w(`${pug['level']['origin']}*.pug`, series(html)).on('change', (file) => {
-        console.log('TCL: watchFiles -> level', '-> file', file);
-    });
+    w(`${pug['index']['origin']}*.pug`, series(html));
+    w(`${pug['level']['origin']}*.pug`, series(html));
     w(`${_js['origin']}*.js`, series(js));
     done();
 }
+const html = $.task.html;
+const js = $.task.js;
+const css = $.task.css;
+const server = $.sync.live;
 
 const dev = series(html, css, js);
 const watch = parallel(watchFiles);
-const build = series(dev, parallel(watch));
+const build = series(dev, parallel(server, watch));
 
 exports.js = js;
 exports.html = html;
 exports.css = css;
+exports.server = server;
 exports.build = build;
 exports.watch = watch;
 exports.default = build;
