@@ -5,7 +5,7 @@ const paths = {
             destiny: './dist',
         },
         level: {
-            origin: `src/views/${$.level}/**/**/`,
+            origin: `src/views/${$.level}/unit_1/module_1/activities/`,
             destiny: `./dist/${$.level}`,
         },
     },

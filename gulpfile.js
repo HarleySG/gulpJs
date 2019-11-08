@@ -4,7 +4,7 @@ const g = require('gulp');
 global.$ = {
     gulp: g,
     task: require('./gulp'),
-    level: 'A2',
+    level: 'A1',
     module: 1,
     hasError: require('./gulp/notify'),
     sync: require('./gulp/server'),
@@ -23,17 +23,19 @@ function watchFiles(done) {
     w(`${_js['origin']}*.js`, series(js));
     done();
 }
+const copy = $.task.copy;
 const html = $.task.html;
 const js = $.task.js;
 const css = $.task.css;
 const server = $.sync.live;
 
-const dev = series(html, css, js);
-const watch = parallel(watchFiles);
-const build = series(dev, parallel(server, watch));
+const dev = parallel(html, css, js);
+const watch = watchFiles;
+const build = series(dev, parallel(watch, server));
 
 exports.js = js;
 exports.html = html;
+exports.copy = copy;
 exports.css = css;
 exports.server = server;
 exports.build = build;
