@@ -4,7 +4,7 @@
     "description": "Configuración a la versión 4 de gulpjs",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "gulp"
     },
     "repository": {
         "type": "git",
@@ -29,7 +29,6 @@
         "gulp-cache": "^1.0.2",
         "gulp-cached": "^1.1.1",
         "gulp-changed": "^3.2.0",
-        "gulp-cli": "^2.2.0",
         "gulp-filter": "^5.1.0",
         "gulp-git": "^2.9.0",
         "gulp-header": "2.0.5",
